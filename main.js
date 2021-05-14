@@ -1,12 +1,21 @@
 const KEY_CODE_LEFT = 37;
 const KEY_CODE_RIGHT = 39;
 const KEY_CODE_SPACE = 32;
-console.log("dlj;n")
+
 const GAME_WIDTH = 650;
 const GAME_HEIGHT = 650;
 var count = 0;
 var count1 = 100;
 var count2 = 0;
+
+var score = document.createElement("h3");
+score.innerText = "0 / 50";
+score.style.position= "absolute";
+score.style.top= "8px";
+score.style.left= "16px";
+document.body.appendChild(score)
+
+var scoreBoss = document.createElement("h3");
 
 
 const GAME_STATE = {
@@ -14,6 +23,7 @@ const GAME_STATE = {
   playerX: 0,
   playerY: 0,
   lasers: [],
+  block: [],
   enemy: []
 };
 
@@ -80,6 +90,7 @@ window.addEventListener("keydown", onKeyDown);
 window.requestAnimationFrame(update);
 
 
+
 function update(e) {
   const lasers = GAME_STATE.lasers;
   const enemy = GAME_STATE.enemy;
@@ -88,6 +99,12 @@ function update(e) {
   GAME_STATE.lasers = GAME_STATE.lasers.filter(e => !e.isDead);
   enemy1(GAME_STATE.enemy, 1, p)
   GAME_STATE.enemy = GAME_STATE.enemy.filter(e => !e.isDead);
+
+  block(GAME_STATE.block, enemy, p)
+  GAME_STATE.enemy = GAME_STATE.enemy.filter(e => !e.isDead);
+
+
+
 
   // updatePlayer();
   window.requestAnimationFrame(update);
@@ -121,37 +138,56 @@ function leser(lasers, enemies, body) {
       const r2 = enemy.$element1.getBoundingClientRect();
       if (rectsIntersect(r1, r2)) {
         // Enemy was hit
-        if(count < 20){
-        count++;
-        console.log(count)
-        destroyEnemy(body, enemy);
-        destroyLaser(body, laser);
-        break;
+        if (count < 5) {
+          count++;
+          
+          
+          score.innerText = count + " / 50";
+          document.body.appendChild(score)
+
+          destroyEnemy(body, enemy);
+          destroyLaser(body, laser);
+          break;
         }
-        else if(count2 > 20){
+        else if (count2 > 18) {
           destroyEnemy(body, enemy);
           destroyLaser(body, laser);
           body.style.backgroundImage = "url('https://i.makeagif.com/media/10-13-2015/FymNEH.gif')"
-      setTimeout(function () {
-          alert("win :)")
-          location.reload();
-      }, 200);
+          setTimeout(function () {
+            alert("win :)")
+            location.reload();
+          }, 250);
           break;
         }
         else {
-          console.log("count2" +count2 )
-          destroyLaser(body, laser);
+          console.log("count2" + count2)
           count2++;
+          scoreBoss.innerText = count2 + " / 20";
+          scoreBoss.style.color = "white"
+         
+          destroyLaser(body, laser);
+          
           break;
         }
       }
     }
+    for (let k = 0; k < GAME_STATE.block.length; k++) {
+      const block = GAME_STATE.block[k];
+      if (block.isDead) continue;
+      const r2 = block.$element3.getBoundingClientRect();
+      if (rectsIntersect(r1, r2)) {
+        destroyLaser(body, laser);
+        break;
+
+      }
+    }
+
   }
 }
 
 
 function enemy1(enemys, num, body) {
-  if (count < 20) {
+  if (count < 5) {
     if (enemys.length < num) {
       let x2 = Math.floor(Math.random() * (463 - 5)) + 5;
       let y2 = 0;
@@ -169,26 +205,47 @@ function enemy1(enemys, num, body) {
     }
     for (let i = 0; i < enemys.length; i++) {
       const enemy = enemys[i];
-      enemy.y2 += 1;
+      enemy.y2 += 1.5;
       if (enemy.y2 > 570) {
         body.removeChild(enemy.$element1);
         enemy.isDead = true;
-        body.style.backgroundImage = "url('https://media0.giphy.com/media/eJ4j2VnYOZU8qJU3Py/giphy.gif')"
-        
 
+        body.style.backgroundImage = "url('https://media0.giphy.com/media/eJ4j2VnYOZU8qJU3Py/giphy.gif')"
         setTimeout(function () {
+
           alert("You lose :(")
           location.reload();
-      }, 200);
-        
+        }, 400);
+
       }
       setPosition(enemy.$element1, enemy.x2, enemy.y2);
+
+      const r1 = enemy.$element1.getBoundingClientRect();
+
+      for (let j = 0; j < GAME_STATE.block.length; j++) {
+        const block = GAME_STATE.block[j];
+        if (block.isDead) continue;
+        const r2 = block.$element3.getBoundingClientRect();
+        if (rectsIntersect(r1, r2)) {
+          destroyEnemy(body, enemy);
+          break;
+
+        }
+      }
+
     }
   }
   else {
     let x2 = Math.floor(Math.random() * (463 - 0)) + 0;
     if (enemys.length < 1) {
       document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/d2/63/55/d26355a4484cf412669476a57a263abc.png')";
+      scoreBoss.innerText = "0 / 20";
+      scoreBoss.style.color = "white"
+      scoreBoss.style.position= "absolute";
+      scoreBoss.style.top= "8px";
+      scoreBoss.style.left= "16px";
+
+      document.body.appendChild(scoreBoss)
       let y2 = 0;
       const $element1 = document.createElement("div");
       $element1.style.width = '200px';
@@ -200,17 +257,36 @@ function enemy1(enemys, num, body) {
       console.log(enemys)
       setPosition($element1, x2, y2);
     }
-    if(count1 > 100){
+    if (count1 > 100) {
       const enemy = enemys[0];
-        enemy.x2 = Math.floor(Math.random() * (463 - 0)) + 0;
+      enemy.x2 = Math.floor(Math.random() * (463 - 0)) + 0;
       setPosition(enemy.$element1, enemy.x2, enemy.y2);
       count1 = 0
     }
-    else{
+    else {
       count1++;
     }
 
   }
 
 
+}
+
+
+function block(block, enemy, body) {
+  if (block.length < 3) {
+    let x3 = Math.floor(Math.random() * (463 - 5)) + 5;
+    let y3 = Math.floor(Math.random() * (100 - 300)) + 300;
+    const $element3 = document.createElement("div");
+    $element3.style.width = '40px';
+    $element3.style.height = '20px';
+    $element3.style.backgroundColor = 'gray';
+    body.appendChild($element3);
+    const e = { x3, y3, $element3 };
+    block.push(e);
+    console.log(block)
+    setPosition($element3, x3, y3);
+
+
+  }
 }
