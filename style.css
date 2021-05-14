@@ -1,3 +1,9 @@
+body{
+  background-image: url("https://pressstart.vip/images/uploads/assets/cityskyline.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .game {
     width: 2500px;
     height: 650px;
@@ -6,12 +12,11 @@
     width: 50%;
     border: 3px solid rgb(0, 0, 0);
     padding: 10px;
-    /* position: relative; */
-    
+    background-color: white;    
   }
 
   .player{
     width: 150px;
     height: 25px;
-    background-color: red;
+    background-color: rgb(40, 40, 114);
   }

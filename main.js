@@ -180,11 +180,12 @@ function enemy1(enemys, num, body) {
   else {
     let x2 = Math.floor(Math.random() * (463 - 0)) + 0;
     if (enemys.length < 1) {
+      document.body.style.backgroundImage = "url('https://i.pinimg.com/originals/d2/63/55/d26355a4484cf412669476a57a263abc.png')";
       let y2 = 0;
       const $element1 = document.createElement("div");
       $element1.style.width = '200px';
       $element1.style.height = '50px';
-      $element1.style.backgroundColor = 'red';
+      $element1.style.backgroundColor = 'darkred';
       body.appendChild($element1);
       const e = { x2, y2, $element1 };
       enemys.push(e);
