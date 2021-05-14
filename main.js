@@ -72,7 +72,6 @@ function onKeyDown(e) {
     console.log(GAME_STATE.lasers)
     setPosition($element, x1, y1);
 
-
   }
 }
 
@@ -132,8 +131,11 @@ function leser(lasers, enemies, body) {
         else if(count2 > 20){
           destroyEnemy(body, enemy);
           destroyLaser(body, laser);
+          body.style.backgroundImage = "url('https://i.makeagif.com/media/10-13-2015/FymNEH.gif')"
+      setTimeout(function () {
           alert("win :)")
           location.reload();
+      }, 200);
           break;
         }
         else {
@@ -151,10 +153,10 @@ function leser(lasers, enemies, body) {
 function enemy1(enemys, num, body) {
   if (count < 20) {
     if (enemys.length < num) {
-      let x2 = Math.floor(Math.random() * (463 - 0)) + 0;
+      let x2 = Math.floor(Math.random() * (463 - 5)) + 5;
       let y2 = 0;
       const $element1 = document.createElement("div");
-      $element1.style.width = '50px';
+      $element1.style.width = '60px';
       $element1.style.height = '20px';
       $element1.style.backgroundColor = 'red';
       body.appendChild($element1);
@@ -171,8 +173,14 @@ function enemy1(enemys, num, body) {
       if (enemy.y2 > 570) {
         body.removeChild(enemy.$element1);
         enemy.isDead = true;
-        alert("You loss :(")
+        body.style.backgroundImage = "url('https://media0.giphy.com/media/eJ4j2VnYOZU8qJU3Py/giphy.gif')"
+        
+
+        setTimeout(function () {
+          alert("You lose :(")
           location.reload();
+      }, 200);
+        
       }
       setPosition(enemy.$element1, enemy.x2, enemy.y2);
     }
