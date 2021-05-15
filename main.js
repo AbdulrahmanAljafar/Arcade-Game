@@ -23,6 +23,7 @@ const GAME_STATE = {
   playerX: 0,
   playerY: 0,
   lasers: [],
+  lasersEnemy: [],
   block: [],
   enemy: []
 };
@@ -45,7 +46,7 @@ function setPosition($el, x, y) {
 function createPlayer() {
   GAME_STATE.playerX = GAME_WIDTH / 2;
   GAME_STATE.playerY = GAME_HEIGHT - 50;
-  const $player = document.querySelector(".player");
+  var $player = document.querySelector(".player");
   setPosition($player, GAME_STATE.playerX, GAME_STATE.playerY);
 }
 
@@ -126,7 +127,7 @@ function leser(lasers, enemies, body) {
   for (let i = 0; i < lasers.length; i++) {
     const laser = lasers[i];
     laser.y1 -= 8;
-    if (laser.y1 < -33) {
+    if (laser.y1 < -100) {
       destroyLaser(body, laser)
     }
     setPosition(laser.$element, laser.x1, laser.y1);
@@ -138,7 +139,7 @@ function leser(lasers, enemies, body) {
       const r2 = enemy.$element1.getBoundingClientRect();
       if (rectsIntersect(r1, r2)) {
         // Enemy was hit
-        if (count < 5) {
+        if (count < 50) {
           count++;
           
           
@@ -187,7 +188,7 @@ function leser(lasers, enemies, body) {
 
 
 function enemy1(enemys, num, body) {
-  if (count < 5) {
+  if (count < 50) {
     if (enemys.length < num) {
       let x2 = Math.floor(Math.random() * (463 - 5)) + 5;
       let y2 = 0;
@@ -232,7 +233,6 @@ function enemy1(enemys, num, body) {
 
         }
       }
-
     }
   }
   else {
@@ -257,15 +257,73 @@ function enemy1(enemys, num, body) {
       console.log(enemys)
       setPosition($element1, x2, y2);
     }
+     
     if (count1 > 100) {
       const enemy = enemys[0];
       enemy.x2 = Math.floor(Math.random() * (463 - 0)) + 0;
       setPosition(enemy.$element1, enemy.x2, enemy.y2);
       count1 = 0
+
+     
+  
+      let y2 = 0;
+      x2 += 100;
+      let p = document.querySelector(".game")
+      const $element5 = document.createElement("div");
+      $element5.style.width = '5px';
+      $element5.style.height = '20px';
+      $element5.style.backgroundColor = 'red';
+      p.appendChild($element5);
+      const laser = { x2, y2, $element5 };
+      GAME_STATE.lasersEnemy.push(laser);
+      console.log(GAME_STATE.lasersEnemy)
+      setPosition($element5, x2, y2);
+
+  
     }
     else {
       count1++;
+
+   
+      for (let i = 0; i < GAME_STATE.lasersEnemy.length; i++) {
+        const enemy = GAME_STATE.lasersEnemy[i];
+        enemy.y2 += 3;
+        if (enemy.y2 > 500) {
+          body.removeChild(enemy.$element5);
+          enemy.isDead = true;
+  
+        }
+        setPosition(enemy.$element5, enemy.x2, enemy.y2);
+        const r1 = enemy.$element5.getBoundingClientRect();
+        const $player = document.querySelector(".player");
+        const r2 = $player.getBoundingClientRect();
+        if (rectsIntersect(r1, r2)) {
+          body.style.backgroundImage = "url('https://media0.giphy.com/media/eJ4j2VnYOZU8qJU3Py/giphy.gif')"
+          setTimeout(function () {
+            // alert("Game Over :(");
+            location.reload();
+          }, 3000);
+          break;
+        }
+  
+        for (let j = 0; j < GAME_STATE.block.length; j++) {
+          const block = GAME_STATE.block[j];
+          if (block.isDead) continue;
+          const r2 = block.$element3.getBoundingClientRect();
+          if (rectsIntersect(r1, r2)) {
+            body.removeChild(enemy.$element5);
+            enemy.isDead = true;
+            break;
+  
+          }
+        }
+  
+  
+      }
+      GAME_STATE.lasersEnemy = GAME_STATE.lasersEnemy.filter(e => !e.isDead);
     }
+    
+    
 
   }
 
