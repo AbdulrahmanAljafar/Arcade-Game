@@ -20,3 +20,49 @@ body{
     height: 25px;
     background-color: rgb(40, 40, 114);
   }
+
+
+  .main-page{
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+     url(https://websitepeople.com.au/wp-content/uploads/2018/06/pattern-background.jpg);
+	height: 90vh;
+	-webkit-background-size: cover;
+	background-size: cover;
+	background-position: center center;
+	position: relative;
+  }
+
+
+  .welcome-text {
+    position: absolute;
+    width: 600px;
+    height: 300px;
+    margin: 20% 30%;
+    text-align: center;
+  }
+  
+    .welcome-text h1 {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    font-size: 60px;
+  }
+  
+  .Tac{
+      color: #0f8392
+  }
+  
+  .welcome-text a {
+    border: 1px solid #fff;
+    padding: 10px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-top: 20px;
+    display: inline-block;
+    color: #fff;
+  }
+  .welcome-text a:hover {
+    background: #fff;
+    color: #333;
+  }
