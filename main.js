@@ -157,7 +157,7 @@ function leser(lasers, enemies, body) {
           setTimeout(function () {
             alert("win :)")
             location.reload();
-          }, 250);
+          }, 500);
           break;
         }
         else {
@@ -216,7 +216,7 @@ function enemy1(enemys, num, body) {
 
           alert("You lose :(")
           location.reload();
-        }, 400);
+        }, 700);
 
       }
       setPosition(enemy.$element1, enemy.x2, enemy.y2);
