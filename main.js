@@ -95,13 +95,15 @@ window.requestAnimationFrame(update);
 function update(e) {
   const lasers = GAME_STATE.lasers;
   const enemy = GAME_STATE.enemy;
+  let numberOfEnemys = 50;
+  let numberOfBlock = 3;
   let p = document.querySelector(".game")
-  leser(lasers, enemy, p)
+  leser(lasers, enemy, p , 18,numberOfEnemys)
   GAME_STATE.lasers = GAME_STATE.lasers.filter(e => !e.isDead);
-  enemy1(GAME_STATE.enemy, 1, p)
+  enemy1(GAME_STATE.enemy, 1, p,numberOfEnemys)
   GAME_STATE.enemy = GAME_STATE.enemy.filter(e => !e.isDead);
 
-  block(GAME_STATE.block, enemy, p)
+  block(GAME_STATE.block, numberOfBlock, p)
   GAME_STATE.enemy = GAME_STATE.enemy.filter(e => !e.isDead);
 
 
@@ -122,7 +124,7 @@ function destroyEnemy($container, enemy) {
   enemy.isDead = true;
 }
 
-function leser(lasers, enemies, body) {
+function leser(lasers, enemies, body,numberToKill,numberOfEnemys) {
 
   for (let i = 0; i < lasers.length; i++) {
     const laser = lasers[i];
@@ -139,7 +141,7 @@ function leser(lasers, enemies, body) {
       const r2 = enemy.$element1.getBoundingClientRect();
       if (rectsIntersect(r1, r2)) {
         // Enemy was hit
-        if (count < 50) {
+        if (count < numberOfEnemys) {
           count++;
           
           
@@ -150,7 +152,7 @@ function leser(lasers, enemies, body) {
           destroyLaser(body, laser);
           break;
         }
-        else if (count2 > 18) {
+        else if (count2 > numberToKill) {
           destroyEnemy(body, enemy);
           destroyLaser(body, laser);
           body.style.backgroundImage = "url('https://i.makeagif.com/media/10-13-2015/FymNEH.gif')"
@@ -187,8 +189,8 @@ function leser(lasers, enemies, body) {
 }
 
 
-function enemy1(enemys, num, body) {
-  if (count < 50) {
+function enemy1(enemys, num, body, numberOfEnemys) {
+  if (count < numberOfEnemys) {
     if (enemys.length < num) {
       let x2 = Math.floor(Math.random() * (463 - 5)) + 5;
       let y2 = 0;
@@ -331,8 +333,8 @@ function enemy1(enemys, num, body) {
 }
 
 
-function block(block, enemy, body) {
-  if (block.length < 3) {
+function block(block, numberOfBlock, body) {
+  if (block.length < numberOfBlock) {
     let x3 = Math.floor(Math.random() * (463 - 5)) + 5;
     let y3 = Math.floor(Math.random() * (100 - 300)) + 300;
     const $element3 = document.createElement("div");
